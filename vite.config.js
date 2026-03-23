@@ -8,12 +8,11 @@ export default defineConfig({
 
     server: {
         port: 5173,
-        // Прокси для API запросов в режиме разработки
-        proxy: {
-            "/api": {
-                target: process.env.VITE_API_URL || "http://127.0.0.1:8000",
-                changeOrigin: true,
-            },
+        // Определяем базовый url для API
+        define: {
+            "import.meta.env.VITE_API_URL": JSON.stringify(
+                process.env.VITE_API_URL || "",
+            ),
         },
     },
 });
