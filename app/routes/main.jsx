@@ -54,6 +54,7 @@ export default function Profile() {
         const fetchUserData = async () => {
             const response = await fetch(`${API_URL}/api/current-user`, {
                 method: "GET",
+                credentials: "include",
                 headers: { "Content-Type": "application/json" },
             });
             const responseData = await response.json();

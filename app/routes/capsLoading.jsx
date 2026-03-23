@@ -71,6 +71,7 @@ export default function CapsLoading() {
         const fetchDeposits = async () => {
             const response = await fetch(`${API_URL}/api/get-last-deposits`, {
                 method: "GET",
+                credentials: "include",
                 headers: { "Content-Type": "application/json" },
             });
             const responseData = await response.json();
@@ -132,6 +133,7 @@ export default function CapsLoading() {
                 `${API_URL}/api/add-to-queue/${creds.machine_code}`,
                 {
                     method: "GET",
+                    credentials: "include",
                     headers: { "Content-Type": "application/json" },
                 },
             );
