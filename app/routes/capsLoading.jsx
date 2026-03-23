@@ -17,6 +17,9 @@ import LayersIcon from "../assets/icons/wired-flat-12-layers-hover-slide.json";
 import ClockIcon from "../assets/icons/wired-outline-45-clock-time-loop-oscillate.json";
 import CoinsIcon from "../assets/icons/wired-outline-298-coins-in-reveal.json";
 
+const API_URL = import.meta.env.VITE_API_URL;
+// const API_URL = "http://127.0.0.1:8000";
+
 export default function CapsLoading() {
     const navigate = useNavigate();
     const { isAuth, setIsAuth } = useContext(AuthContext);
@@ -66,7 +69,7 @@ export default function CapsLoading() {
         let interval = null;
 
         const fetchDeposits = async () => {
-            const response = await fetch("/api/get-last-deposits", {
+            const response = await fetch(`${API_URL}/api/get-last-deposits`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             });
@@ -126,7 +129,7 @@ export default function CapsLoading() {
             };
 
             const response = await fetch(
-                `/api/add-to-queue/${creds.machine_code}`,
+                `${API_URL}/api/add-to-queue/${creds.machine_code}`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },

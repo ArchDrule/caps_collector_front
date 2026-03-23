@@ -3,6 +3,9 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router";
 import AuthContext from "../context";
 
+const API_URL = import.meta.env.VITE_API_URL;
+// const API_URL = "http://127.0.0.1:8000";
+
 export default function Auth() {
     const navigate = useNavigate();
     const { isAuth, setIsAuth } = useContext(AuthContext);
@@ -66,7 +69,7 @@ export default function Auth() {
         //при разработке указывать просто название роута на сервере
         //при деплое уже менять на полный адрес к роуту на сервере
         setIsSending(true);
-        const response = await fetch("/api/login", {
+        const response = await fetch(`${API_URL}/api/login`, {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json" },

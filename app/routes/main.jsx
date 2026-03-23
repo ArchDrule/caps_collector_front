@@ -20,6 +20,9 @@ import { useEffect, useRef, useState, useContext } from "react";
 import DepositsList from "../components/depositsList";
 import AuthContext from "../context";
 
+const API_URL = import.meta.env.VITE_API_URL;
+// const API_URL = "http://127.0.0.1:8000";
+
 import LightLogo from "../assets/logo/light.svg";
 import DarkLogo from "../assets/logo/dark.svg";
 
@@ -49,7 +52,7 @@ export default function Profile() {
         // console.log("Authentificated: " + authentificated);
 
         const fetchUserData = async () => {
-            const response = await fetch("/api/current-user", {
+            const response = await fetch(`${API_URL}/api/current-user`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             });

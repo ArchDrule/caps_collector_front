@@ -2,6 +2,9 @@ import { TextField, Card, Flex, Button, Text, Box } from "@radix-ui/themes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
+const API_URL = import.meta.env.VITE_API_URL;
+// const API_URL = "http://127.0.0.1:8000";
+
 export default function Registration() {
     const navigate = useNavigate();
 
@@ -63,7 +66,7 @@ export default function Registration() {
         //при разработке указывать просто название роута на сервере
         //при деплое уже менять на полный адрес к роуту на сервере
         setIsSending(true);
-        const response = await fetch("/api/register", {
+        const response = await fetch(`${API_URL}/api/register`, {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json" },
