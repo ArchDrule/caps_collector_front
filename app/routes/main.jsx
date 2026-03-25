@@ -13,11 +13,14 @@ import {
     HoverCard,
     Skeleton,
     Box,
+    Select,
 } from "@radix-ui/themes";
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import { useNavigate } from "react-router";
 import { useEffect, useRef, useState, useContext } from "react";
 import DepositsList from "../components/depositsList";
+import ActivityForm from "../components/activityForm";
+import ActivityChart from "../components/activityChart";
 import AuthContext from "../context";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -37,6 +40,8 @@ export default function Profile() {
 
     const [selectedMachine, setSelectedMachine] = useState("");
     const [machineIsNotSelected, setMachineIsNotSelected] = useState(false);
+
+    const [sessions, setSessions] = useState(null);
 
     useEffect(() => {
         if (hasFetched.current) {
@@ -71,6 +76,7 @@ export default function Profile() {
 
                 setDeposits([...responseData.user.deposits]);
                 setMachines([...responseData.machines]);
+                setSessions([...responseData.user.sessions]);
             } else if (
                 responseData.message === "Invalid Token" ||
                 responseData.message === "Token Error"
@@ -97,7 +103,7 @@ export default function Profile() {
 
     return (
         <main>
-            <Flex wrap="wrap" gap={"4"} className="lg:w-5xl px-5">
+            <Flex direction={"column"} gap={"4"} className="lg:w-5xl px-5">
                 <Box className="grow flex-2">
                     <img
                         src={theme === "light" ? LightLogo : DarkLogo}
@@ -220,126 +226,134 @@ export default function Profile() {
 
                 <Separator my="2" size="4" />
 
-                <Card className="grow flex-1 min-w-64">
-                    <h3 className="pb-3 font-medium text-center">Аккаунт</h3>
-                    <Flex>
-                        <DataList.Root
-                            orientation={{
-                                initial: "vertical",
-                                sm: "horizontal",
-                            }}
+                <Flex wrap="wrap" gap={"4"} className="grow flex-2">
+                    <Card className="grow flex-1 min-w-64">
+                        <h3 className="pb-3 font-medium text-center">
+                            Аккаунт
+                        </h3>
+                        <Flex>
+                            <DataList.Root
+                                orientation={{
+                                    initial: "vertical",
+                                    sm: "horizontal",
+                                }}
+                            >
+                                <DataList.Item>
+                                    <DataList.Label minWidth="100px">
+                                        <Strong>Роль</Strong>
+                                    </DataList.Label>
+                                    <DataList.Value>
+                                        {userInfo !== null ? (
+                                            <Badge
+                                                color={
+                                                    userInfo.isAdmin
+                                                        ? "tomato"
+                                                        : "indigo"
+                                                }
+                                            >
+                                                {userInfo.isAdmin
+                                                    ? "Администратор"
+                                                    : "Пользователь"}
+                                            </Badge>
+                                        ) : (
+                                            <Skeleton>Loading</Skeleton>
+                                        )}
+                                    </DataList.Value>
+                                </DataList.Item>
+
+                                <DataList.Item>
+                                    <DataList.Label minWidth="100px">
+                                        <Strong>Email</Strong>
+                                    </DataList.Label>
+                                    <DataList.Value>
+                                        {userInfo !== null ? (
+                                            <Link href={userInfo.email}>
+                                                {userInfo.email}
+                                            </Link>
+                                        ) : (
+                                            <Skeleton>Loading</Skeleton>
+                                        )}
+                                    </DataList.Value>
+                                </DataList.Item>
+
+                                <DataList.Item>
+                                    <DataList.Label minWidth="100px">
+                                        <Strong>Telegram ID</Strong>
+                                    </DataList.Label>
+                                    <DataList.Value>
+                                        {userInfo !== null ? (
+                                            (userInfo.telegramId ?? (
+                                                <Text className="italic">
+                                                    Отсутствует
+                                                </Text>
+                                            ))
+                                        ) : (
+                                            <Skeleton>Loading</Skeleton>
+                                        )}
+                                    </DataList.Value>
+                                </DataList.Item>
+
+                                <DataList.Item>
+                                    <DataList.Label minWidth="100px">
+                                        <Strong>Баланс токенов</Strong>
+                                    </DataList.Label>
+                                    <DataList.Value>
+                                        {userInfo !== null ? (
+                                            userInfo.balance
+                                        ) : (
+                                            <Skeleton>Loading</Skeleton>
+                                        )}
+                                    </DataList.Value>
+                                </DataList.Item>
+
+                                <DataList.Item>
+                                    <DataList.Label minWidth="100px">
+                                        <Strong>Внесено крышек</Strong>
+                                    </DataList.Label>
+                                    <DataList.Value>
+                                        {userInfo !== null ? (
+                                            userInfo.capsCount
+                                        ) : (
+                                            <Skeleton>Loading</Skeleton>
+                                        )}
+                                    </DataList.Value>
+                                </DataList.Item>
+                            </DataList.Root>
+                        </Flex>
+                    </Card>
+
+                    <Card className="grow flex-1 min-w-64">
+                        <h3 className="pb-3 font-medium text-center">
+                            История
+                        </h3>
+
+                        <ScrollArea
+                            type="auto"
+                            scrollbars="vertical"
+                            style={{ height: 364, paddingRight: 18 }}
                         >
-                            <DataList.Item>
-                                <DataList.Label minWidth="100px">
-                                    <Strong>Роль</Strong>
-                                </DataList.Label>
-                                <DataList.Value>
-                                    {userInfo !== null ? (
-                                        <Badge
-                                            color={
-                                                userInfo.isAdmin
-                                                    ? "tomato"
-                                                    : "indigo"
-                                            }
-                                        >
-                                            {userInfo.isAdmin
-                                                ? "Администратор"
-                                                : "Пользователь"}
-                                        </Badge>
-                                    ) : (
-                                        <Skeleton>Loading</Skeleton>
-                                    )}
-                                </DataList.Value>
-                            </DataList.Item>
+                            {deposits !== null && deposits.length > 0 ? (
+                                <DepositsList
+                                    deposits={deposits}
+                                ></DepositsList>
+                            ) : deposits !== null && deposits.length == 0 ? (
+                                <Box className="max-w-[320px] mx-auto text-center pl-4.5">
+                                    <Text>
+                                        Вы еще не внесли ни одну крышку.
+                                        Воспользуйтесь формой выше, чтобы внести
+                                        первые крышки и получить токены!
+                                    </Text>
+                                </Box>
+                            ) : (
+                                <Skeleton>
+                                    <Box width="100%" height="100%"></Box>
+                                </Skeleton>
+                            )}
+                        </ScrollArea>
+                    </Card>
+                </Flex>
 
-                            <DataList.Item>
-                                <DataList.Label minWidth="100px">
-                                    <Strong>Email</Strong>
-                                </DataList.Label>
-                                <DataList.Value>
-                                    {userInfo !== null ? (
-                                        <Link href={userInfo.email}>
-                                            {userInfo.email}
-                                        </Link>
-                                    ) : (
-                                        <Skeleton>Loading</Skeleton>
-                                    )}
-                                </DataList.Value>
-                            </DataList.Item>
-
-                            <DataList.Item>
-                                <DataList.Label minWidth="100px">
-                                    <Strong>Telegram ID</Strong>
-                                </DataList.Label>
-                                <DataList.Value>
-                                    {userInfo !== null ? (
-                                        (userInfo.telegramId ?? (
-                                            <Text className="italic">
-                                                Отсутствует
-                                            </Text>
-                                        ))
-                                    ) : (
-                                        <Skeleton>Loading</Skeleton>
-                                    )}
-                                </DataList.Value>
-                            </DataList.Item>
-
-                            <DataList.Item>
-                                <DataList.Label minWidth="100px">
-                                    <Strong>Баланс токенов</Strong>
-                                </DataList.Label>
-                                <DataList.Value>
-                                    {userInfo !== null ? (
-                                        userInfo.balance
-                                    ) : (
-                                        <Skeleton>Loading</Skeleton>
-                                    )}
-                                </DataList.Value>
-                            </DataList.Item>
-
-                            <DataList.Item>
-                                <DataList.Label minWidth="100px">
-                                    <Strong>Внесено крышек</Strong>
-                                </DataList.Label>
-                                <DataList.Value>
-                                    {userInfo !== null ? (
-                                        userInfo.capsCount
-                                    ) : (
-                                        <Skeleton>Loading</Skeleton>
-                                    )}
-                                </DataList.Value>
-                            </DataList.Item>
-                        </DataList.Root>
-                    </Flex>
-                </Card>
-
-                <Card className="grow flex-1 min-w-64">
-                    <h3 className="pb-3 font-medium text-center">История</h3>
-
-                    <ScrollArea
-                        type="auto"
-                        scrollbars="vertical"
-                        style={{ height: 364, paddingRight: 18 }}
-                    >
-                        {deposits !== null && deposits.length > 0 ? (
-                            <DepositsList deposits={deposits}></DepositsList>
-                        ) : deposits !== null && deposits.length == 0 ? (
-                            <Box className="max-w-[320px] mx-auto text-center pl-4.5">
-                                <Text>
-                                    Вы еще не внесли ни одну крышку.
-                                    Воспользуйтесь формой выше, чтобы внести
-                                    первые крышки и получить токены!
-                                </Text>
-                            </Box>
-                        ) : (
-                            <Skeleton>
-                                <Box width="100%" height="100%"></Box>
-                            </Skeleton>
-                        )}
-                    </ScrollArea>
-                </Card>
-
-                <Card className="grow flex-2 min-w-64">
+                {/* <Card className="grow flex-1 min-w-64">
                     <h3 className="pb-3 font-medium text-center">Помощь</h3>
 
                     <Flex>
@@ -376,6 +390,18 @@ export default function Profile() {
                             </DataList.Item>
                         </DataList.Root>
                     </Flex>
+                </Card> */}
+
+                <Card className="grow flex-2 min-w-64">
+                    <h3 className="pb-3 font-medium text-center">Активность</h3>
+
+                    {sessions !== null ? (
+                        <ActivityForm activityData={sessions}></ActivityForm>
+                    ) : (
+                        <Skeleton>
+                            <Box width="100%" height="250"></Box>
+                        </Skeleton>
+                    )}
                 </Card>
             </Flex>
         </main>
