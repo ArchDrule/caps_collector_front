@@ -65,7 +65,7 @@ export default function ActivityChart({
             <YAxis dataKey="minutes" />
             <Tooltip
                 wrapperStyle={{
-                    width: 222,
+                    width: 228,
                     backgroundColor: "#ccc",
                 }}
                 contentStyle={{
@@ -80,7 +80,7 @@ export default function ActivityChart({
                 barSize={30}
                 name="Время (мин)"
             />
-            <Bar dataKey="logout_time" fill="#8884d8" name="Послений выход" />
+            <Bar dataKey="logout_time" fill="#8884d8" name="Последний выход" />
         </BarChart>
     );
 }

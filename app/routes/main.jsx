@@ -15,7 +15,12 @@ import {
     Box,
     Select,
 } from "@radix-ui/themes";
-import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+import {
+    ClockIcon,
+    PersonIcon,
+    QuestionMarkCircledIcon,
+    RocketIcon,
+} from "@radix-ui/react-icons";
 import { useNavigate } from "react-router";
 import { useEffect, useRef, useState, useContext } from "react";
 import DepositsList from "../components/depositsList";
@@ -228,9 +233,15 @@ export default function Profile() {
 
                 <Flex wrap="wrap" gap={"4"} className="grow flex-2">
                     <Card className="grow flex-1 min-w-64">
-                        <h3 className="pb-3 font-medium text-center">
-                            Аккаунт
-                        </h3>
+                        <Flex
+                            align="center"
+                            justify="center"
+                            className="pb-3 gap-2"
+                        >
+                            <PersonIcon className="w-5 h-5" />
+                            <h3 className="font-medium text-center">Аккаунт</h3>
+                        </Flex>
+
                         <Flex>
                             <DataList.Root
                                 orientation={{
@@ -323,9 +334,14 @@ export default function Profile() {
                     </Card>
 
                     <Card className="grow flex-1 min-w-64">
-                        <h3 className="pb-3 font-medium text-center">
-                            История
-                        </h3>
+                        <Flex
+                            align="center"
+                            justify="center"
+                            className="pb-3 gap-2"
+                        >
+                            <ClockIcon className="w-5 h-5" />
+                            <h3 className="font-medium text-center">История</h3>
+                        </Flex>
 
                         <ScrollArea
                             type="auto"
@@ -393,14 +409,19 @@ export default function Profile() {
                 </Card> */}
 
                 <Card className="grow flex-2 min-w-64">
-                    <h3 className="pb-3 font-medium text-center">Активность</h3>
+                    <Flex
+                        align="center"
+                        justify="center"
+                        className="pb-3 gap-2"
+                    >
+                        <RocketIcon className="w-5 h-5" />
+                        <h3 className="font-medium text-center">Активность</h3>
+                    </Flex>
 
                     {sessions !== null ? (
                         <ActivityForm activityData={sessions}></ActivityForm>
                     ) : (
-                        <Skeleton>
-                            <Box width="100%" height="250"></Box>
-                        </Skeleton>
+                        {}
                     )}
                 </Card>
             </Flex>
