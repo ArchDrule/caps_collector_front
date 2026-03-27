@@ -1,5 +1,5 @@
 import { Flex, Select, ScrollArea, Strong, Box } from "@radix-ui/themes";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import ActivityChart from "./activityChart";
 
 export default function ActivityForm({ activityData }) {
@@ -69,7 +69,7 @@ export default function ActivityForm({ activityData }) {
                 <Flex align="center" gap="3" pb="2">
                     <Strong className="leading-4">Начальная дата</Strong>
 
-                    {activityData !== null && activityData.length !== 0 ? (
+                    {activityData !== null && activityData.length > 0 ? (
                         <Select.Root
                             size="3"
                             value={startFilter}
@@ -97,7 +97,7 @@ export default function ActivityForm({ activityData }) {
                 <Flex align="center" gap="3" pb="2">
                     <Strong className="leading-4">Конечная дата</Strong>
 
-                    {activityData !== null && activityData.length !== 0 ? (
+                    {activityData !== null && activityData.length > 0 ? (
                         <Select.Root
                             size="3"
                             value={endFilter}

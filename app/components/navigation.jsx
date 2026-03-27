@@ -9,7 +9,7 @@ export function Navigation({ theme, changeTheme }) {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { isAuth, setIsAuth } = useContext(AuthContext);
+    const { isAuth, setIsAuth, isAdmin, setIsAdmin } = useContext(AuthContext);
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -18,6 +18,12 @@ export function Navigation({ theme, changeTheme }) {
             path: "/",
             label: "Главная",
             auth: false,
+            guest: false,
+        },
+        {
+            path: "/admin",
+            label: "Админка",
+            auth: true,
             guest: false,
         },
         // {
@@ -87,6 +93,10 @@ export function Navigation({ theme, changeTheme }) {
 
         setIsAuth(false);
         localStorage.removeItem("authentificated");
+
+        setIsAdmin(false);
+        localStorage.removeItem("isAdmin");
+
         navigate("/auth", { replace: true });
     };
 

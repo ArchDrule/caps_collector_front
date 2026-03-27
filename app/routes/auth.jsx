@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Auth() {
     const navigate = useNavigate();
-    const { isAuth, setIsAuth } = useContext(AuthContext);
+    const { isAuth, setIsAuth, setIsAdmin } = useContext(AuthContext);
 
     const defaultFieldOpts = {
         color: "",
@@ -86,6 +86,12 @@ export default function Auth() {
 
             setIsAuth(true);
             localStorage.setItem("authentificated", true);
+
+            if (responseData.user.is_admin == true) {
+                localStorage.setItem("isAdmin", true);
+                setIsAdmin(true);
+            }
+
             navigate("/");
         } else {
             console.log("Failed!");

@@ -13,7 +13,6 @@ import {
     HoverCard,
     Skeleton,
     Box,
-    Select,
 } from "@radix-ui/themes";
 import {
     ClockIcon,
@@ -25,7 +24,6 @@ import { useNavigate } from "react-router";
 import { useEffect, useRef, useState, useContext } from "react";
 import DepositsList from "../components/depositsList";
 import ActivityForm from "../components/activityForm";
-import ActivityChart from "../components/activityChart";
 import AuthContext from "../context";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -36,7 +34,7 @@ import DarkLogo from "../assets/logo/dark.svg";
 
 export default function Profile() {
     const navigate = useNavigate();
-    const { isAuth, setIsAuth, theme } = useContext(AuthContext);
+    const { isAuth, setIsAuth, theme, setIsAdmin } = useContext(AuthContext);
     const hasFetched = useRef(false);
 
     const [userInfo, setUserInfo] = useState(null);
@@ -86,6 +84,12 @@ export default function Profile() {
                 responseData.message === "Invalid Token" ||
                 responseData.message === "Token Error"
             ) {
+                setIsAuth(false);
+                localStorage.removeItem("authentificated");
+
+                setIsAdmin(false);
+                localStorage.removeItem("isAdmin");
+
                 navigate("/auth", { replace: true });
                 return;
             }
@@ -418,10 +422,8 @@ export default function Profile() {
                         <h3 className="font-medium text-center">Активность</h3>
                     </Flex>
 
-                    {sessions !== null ? (
+                    {sessions !== null && sessions.length > 0 && (
                         <ActivityForm activityData={sessions}></ActivityForm>
-                    ) : (
-                        {}
                     )}
                 </Card>
             </Flex>

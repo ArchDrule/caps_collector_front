@@ -5,4 +5,5 @@ export default [
     route("/registration", "./routes/registration.jsx"),
     route("/auth", "./routes/auth.jsx"),
     route("/caps-loading", "./routes/capsLoading.jsx"),
+    route("/admin", "./routes/admin.jsx"),
 ];

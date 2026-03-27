@@ -30,8 +30,8 @@ export const links = () => [
 
 export function Layout({ children }) {
     const [theme, setTheme] = useState("light");
-
     const [isAuth, setIsAuth] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const changeThemeHandle = () => {
         const gotTheme = theme === "light" ? "dark" : "light";
@@ -41,6 +41,9 @@ export function Layout({ children }) {
     useEffect(() => {
         if (localStorage.getItem("authentificated") !== null) {
             setIsAuth(true);
+        }
+        if (localStorage.getItem("isAdmin" !== null)) {
+            setIsAdmin(true);
         }
 
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -78,7 +81,15 @@ export function Layout({ children }) {
                         flexDirection: "column",
                     }}
                 >
-                    <AuthContext.Provider value={{ isAuth, setIsAuth, theme }}>
+                    <AuthContext.Provider
+                        value={{
+                            theme,
+                            isAuth,
+                            setIsAuth,
+                            isAdmin,
+                            setIsAdmin,
+                        }}
+                    >
                         <Navigation
                             theme={theme}
                             changeTheme={changeThemeHandle}

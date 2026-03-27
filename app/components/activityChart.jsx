@@ -8,7 +8,7 @@ import {
     YAxis,
 } from "recharts";
 import AuthContext from "../context";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo } from "react";
 
 const margin = {
     top: 20,
