@@ -42,7 +42,7 @@ export function Layout({ children }) {
         if (localStorage.getItem("authentificated") !== null) {
             setIsAuth(true);
         }
-        if (localStorage.getItem("isAdmin" !== null)) {
+        if (localStorage.getItem("isAdmin") !== null) {
             setIsAdmin(true);
         }
 

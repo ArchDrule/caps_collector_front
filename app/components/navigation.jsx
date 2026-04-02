@@ -19,12 +19,14 @@ export function Navigation({ theme, changeTheme }) {
             label: "Главная",
             auth: false,
             guest: false,
+            admin: false,
         },
         {
             path: "/admin",
             label: "Админка",
             auth: true,
             guest: false,
+            admin: true,
         },
         // {
         //     path: "/registration",
@@ -65,11 +67,15 @@ export function Navigation({ theme, changeTheme }) {
                     display:
                         !tab.auth && !tab.guest
                             ? "flex"
-                            : !isAuth && tab.guest
+                            : !isAuth && tab.guest && !tab.admin && !isAdmin
                               ? "flex"
-                              : isAuth && tab.auth
+                              : isAuth && tab.auth && !tab.admin && !isAdmin
                                 ? "flex"
-                                : "none",
+                                : !isAuth && tab.guest && tab.admin && !isAdmin
+                                  ? "none"
+                                  : isAuth && tab.auth && tab.admin && isAdmin
+                                    ? "flex"
+                                    : "none",
                 }}
             >
                 <NavLink to={tab.path}>{tab.label}</NavLink>
